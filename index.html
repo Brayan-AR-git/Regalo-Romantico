@@ -344,3 +344,123 @@
 </script>
 </body>
 </html>
+
+<button id="btnContinuar" class="btn-continuar">Ver algo especial ✨</button>
+
+<div id="galaxyContainer" class="galaxy-container"></div>
+
+<style>
+    /* --- ESTILOS DEL BOTÓN --- */
+    .btn-continuar {
+        position: fixed;
+        bottom: 50px;
+        z-index: 2000;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        background: #f48fb1;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.4);
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', sans-serif;
+        font-weight: bold;
+    }
+
+    .btn-continuar:hover {
+        transform: scale(1.1);
+        background: #ec407a;
+    }
+
+    /* --- ESTILOS DE LA GALAXIA --- */
+    .galaxy-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        display: none; /* Se activa con JS */
+        z-index: 3000;
+    }
+
+    .galaxy-phrase {
+        position: absolute;
+        color: #fff;
+        font-weight: 300;
+        white-space: nowrap;
+        text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        animation: orbit linear infinite;
+        opacity: 0;
+    }
+
+    @keyframes orbit {
+        0% { transform: rotate(0deg) translateX(var(--radius)) rotate(0deg); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: rotate(360deg) translateX(var(--radius)) rotate(-360deg); opacity: 0; }
+    }
+
+    /* Clase para desvanecer el ramo */
+    .fade-out {
+        transition: opacity 2s ease, transform 2s ease;
+        opacity: 0 !important;
+        transform: scale(0.5) translateY(100px);
+    }
+</style>
+
+<script>
+    const frases = [
+        "Eres magia", "Mi lugar favorito", "Contigo siempre", 
+        "Lys, eres única", "Brillas como nadie", "Gracias por estar",
+        "Un mundo contigo", "Tu sonrisa es luz", "Te quiero",
+        "Eres mi inspiración", "Pura alegría", "Eterno"
+    ];
+
+    const btn = document.getElementById('btnContinuar');
+    const bouquet = document.querySelector('.bouquet-wrapper');
+    const galaxy = document.getElementById('galaxyContainer');
+
+    btn.addEventListener('click', () => {
+        // 1. Desvanecer ramo y botón
+        bouquet.classList.add('fade-out');
+        btn.style.display = 'none';
+
+        // 2. Mostrar galaxia
+        galaxy.style.display = 'block';
+        crearGalaxia();
+    });
+
+    function crearGalaxia() {
+        const totalFrases = 50; // Cantidad de frases en la galaxia
+        
+        for (let i = 0; i < totalFrases; i++) {
+            const span = document.createElement('span');
+            span.className = 'galaxy-phrase';
+            span.innerText = frases[Math.floor(Math.random() * frases.length)];
+            
+            // Posicionamiento inicial en el centro
+            span.style.left = '50%';
+            span.style.top = '50%';
+            
+            // Variables personalizadas para la animación de órbita
+            const radius = Math.random() * 400 + 50; // Radio de la órbita
+            const duration = Math.random() * 10 + 5; // Velocidad de giro
+            const delay = Math.random() * -20; // Para que no empiecen todas juntas
+            const fontSize = Math.random() * 1.5 + 0.5;
+
+            span.style.setProperty('--radius', `${radius}px`);
+            span.style.animationDuration = `${duration}s`;
+            span.style.animationDelay = `${delay}s`;
+            span.style.fontSize = `${fontSize}rem`;
+            
+            // Color aleatorio suave
+            const colors = ['#f8bbd0', '#e1bee7', '#fff', '#b3e5fc'];
+            span.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+            galaxy.appendChild(span);
+        }
+    }
+</script>
+
